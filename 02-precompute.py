@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 from pathlib import Path
-# import torch
+import torch
 import itertools
 import gzip
 # Local includes
