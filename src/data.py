@@ -9,6 +9,7 @@ import numpy as np
 # from scipy.spatial.transform import Rotation
 from src.configs.general_opts import path_opts
 
+
 class ProteinRecord(Dataset):
     # Dataset for specific protein chain.
     # Read the protein chain, so input should be like 6BOY_C
@@ -63,25 +64,6 @@ class ProteinRecord(Dataset):
         return xyz, features, y_aux  # for testing charges
 
 
-class ProteinsDataset(Dataset):
-    # dataset, whcih contains several proteins, each protein can have several chains
-    def __init__(self, pid_cids_list):
-        super(ProteinsDataset).__init__()
-        self.data = []
-        for i in pid_cids_list:
-            pid, chains = i.strip().split('_')
-            for cid in chains:
-                prot_rec = ProteinRecord(f'{pid}_{cid}')
-                self.data.append(prot_rec)
-
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, index):
-        prot_rec = self.data[index]
-        return prot_rec
-
-
 class AllVertices(Dataset):
     # all combined proteins as flat vertices
     def __init__(self, pid_cids_list):
@@ -90,7 +72,7 @@ class AllVertices(Dataset):
         self.f = []
         self.y_aux = []
         self.id_list = dict()
-
+        i_end = 0
         for i in pid_cids_list:
             pid, chains = i.strip().split('_')
             for cid in chains:
@@ -98,7 +80,9 @@ class AllVertices(Dataset):
                 self.p.append(prot_rec.p)
                 self.f.append(prot_rec.f)
                 self.y_aux.append(prot_rec.y_aux)
-                self.id_list[f'{pid} {cid}'] = len(prot_rec.y_aux)
+                self.id_list[f'{pid}_{cid}'] = [i_end, i_end + len(prot_rec.y_aux)]
+                i_end += len(prot_rec.y_aux)
+
         self.p = torch.cat(self.p, dim=0)
         self.f = torch.cat(self.f, dim=0)
         self.y_aux = torch.cat(self.y_aux, dim=0)
@@ -114,4 +98,15 @@ class AllVertices(Dataset):
 
     def info(self):
         return self.id_list
+
+
+    def get_protein(self, pid_cid):
+        a, b = self.id_list[pid_cid]
+        xyz = self.p[a:b, :]
+        features = self.f[a:b, :]
+        y_aux = self.y_aux[a:b]
+
+        return features, y_aux, xyz
+
+
 

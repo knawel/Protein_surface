@@ -1,6 +1,6 @@
 import tempfile
 
-path_opts = {}
+path_opts = dict()
 # Default directories
 path_opts["pdb_dir"] = "/images/images_calc/Protein_surface/data/data_preparation/00-pdbs/"
 path_opts["pdb_chain_dir"] = "/images/images_calc/Protein_surface/data/data_preparation/00a-pdbs_chains/" # don't need it?

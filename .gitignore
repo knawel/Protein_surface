@@ -6,8 +6,10 @@ __pycache__/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-
 .idea/*
+
+# models
+
 
 # datasets
 data/data_preparation/*

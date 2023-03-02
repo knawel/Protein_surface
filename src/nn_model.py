@@ -1,23 +1,22 @@
 import torch.nn as nn
+import torch.nn.functional as F
 
 
-class Amber_NN(nn.Module):
-
-    def __init__(self, nfeatures, nclasses):
-        super().__init__()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(nfeatures, 64),
-            nn.ReLU(),
-            nn.Linear(64, 64),
-            nn.ReLU(),
-            nn.Linear(64, 64),
-            nn.ReLU(),
-            nn.Linear(64, 64),
-            nn.ReLU(),
-            nn.Linear(64, nclasses)
-        )
+class AmberNN(nn.Module):
+    def __init__(self, input_size, num_classes, hidden_size, p=0.1):
+        super(AmberNN, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.fc3 = nn.Linear(hidden_size, hidden_size)
+        self.fc4 = nn.Linear(hidden_size, num_classes)
+        self.dropout = nn.Dropout(p)
 
     def forward(self, x):
-        # x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
+        out = F.relu(self.fc1(x))
+        out = F.relu(self.fc2(out))
+        out = self.dropout(out)
+        out = F.relu(self.fc3(out))
+        out = self.dropout(out)
+        out = F.relu(self.fc4(out))
+        return out
+
