@@ -38,7 +38,8 @@ run_name = config_runtime['run_name']
 proteins = []
 with open(args.pdb_list, 'r') as iFile:
     for i in iFile:
-        proteins.append(i.strip())
+        if i[0] != '#':
+            proteins.append(i.strip())
 
 # print(proteins)
 _ = torch.manual_seed(seed)

@@ -15,3 +15,8 @@ The method is inspired by a few noticable methods for protein-protein interactio
 
 # Method 
 
+## List of proteins for training
+To cover different classes of protein structures I took a few
+examples of each class, using [that](https://en.wikipedia.org/wiki/Protein_fold_class)
+classification. 
+

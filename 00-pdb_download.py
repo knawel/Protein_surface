@@ -35,19 +35,23 @@ chain_dir.mkdir(parents=True, exist_ok=True)
 if __name__ == '__main__':
     args = parser.parse_args()
     if args.pdb != '':
-        pdb_id = args.pdb.split('_')
-        chains = pdb_id[1]
-        pdb_id = pdb_id[0]
-        get_single(pdb_id, chains, pdb_dir, chain_dir, tmp_dir)
+        pdb = args.pdb.split('_')
+        chains = pdb[1]
+        pid = pdb[0]
+        get_single(pid, chains, pdb_dir, chain_dir, tmp_dir)
 
     elif args.pdb_list != '':
         with open(args.pdb_list) as f:
             pdb_list = f.read().splitlines()
-        for pdb_id in pdb_list:
-            pdb_id = pdb_id.split('_')
-            chains = pdb_id[1]
-            pdb_id = pdb_id[0]
-            get_single(pdb_id, chains, pdb_dir, chain_dir, tmp_dir)
+        for ent in pdb_list:
+            if ent[0] != '#':
+                pdb = ent.split('_')
+                chains = pdb[1]
+                pid = pdb[0]
+                pid = pid
+                get_single(pid, chains, pdb_dir, chain_dir, tmp_dir)
+            else:
+                pass
     else:
         parser.print_help(sys.stderr)
         sys.exit(1)

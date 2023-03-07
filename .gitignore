@@ -9,7 +9,9 @@ __pycache__/
 .idea/*
 
 # models
-
+model/save
+#model/*.log
+model/*.pt
 
 # datasets
 data/data_preparation/*

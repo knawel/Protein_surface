@@ -1,0 +1,36 @@
+# Classification according http://cathdb.info/browse/tree
+#1 Mainly Alpha
+1xmk_A
+3ro3_A
+3iis_M
+4ayo_A
+5lwe_A
+#2 Mainly beta
+3sov_A
+1bx7_A
+3sov_A
+3wvt_A
+2j8b_A
+2fj8_A
+4k12_A
+2f6e_A
+2jne_A
+#3 Alpha Beta
+4g1q_B
+3goe_A
+4acf_A
+4a6q_A
+2bln_A
+1nki_A
+3ks3_A
+1z8g_A
+3l8w_A
+3jv1_A
+3onh_A
+3uby_A
+4xdu_A
+4x33_A
+#4
+4wfo_A
+1rzh_H
+1zt3_A
