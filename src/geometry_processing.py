@@ -326,7 +326,8 @@ def get_atom_features(x, y, y_atomtype, k=16):
     feature = y_atomtype[idx, :]
     feature = torch.cat([feature, dists], dim=1)
     feature = feature.view(num_points, k, num_dims + 1)
-    mean_features = (feature[:, :, :-1] / feature[:, :, -1][:, :, None]).sum(dim=1)
+    # mean_features = (feature[:, :, :-1] / feature[:, :, -1][:, :, None]).sum(dim=1)
+    mean_features = (feature[:, :, :-1] * feature[:, :, -1][:, :, None] ).sum(dim=1)
     return mean_features
 
 
@@ -337,7 +338,7 @@ def get_atom_charge(x, p, charge):
     q_i = LazyTensor(torch.Tensor(charge)[:, None], axis=0)
     y_j = LazyTensor(torch.Tensor(p)[None, :, :])  # (1, M, 3) sampling points
     dist_ij = ((x_i - y_j) ** 2).sum(-1).sqrt()  # (N, M, 1) squared distances
-    # Calculate potencial as
+    # Calculate potential as
     # V = sum(9*1.6*q/d)
     v = (9 * 1.6 * q_i / dist_ij).sum(0)
     v = torch.squeeze(v, dim=1)

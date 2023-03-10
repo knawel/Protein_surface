@@ -5,10 +5,12 @@ import torch
 from torch.utils.data import random_split
 from torch.utils.data import DataLoader
 import torch.nn as nn
+from sklearn.model_selection import train_test_split
 # parameters
-from src.data import AllVertices
-from src.nn_model import AmberNN
+from dataset import AllVertices
+from nn_model import AmberNN
 from run_opts import config_runtime
+from src.logger import Logger
 
 # input arguments:
 parser = argparse.ArgumentParser(description='Run NN model and save it')
@@ -34,21 +36,43 @@ epochs = config_runtime['num_epochs']
 run_name = config_runtime['run_name']
 
 
+logger = Logger("./", "train")
+
+# store parameters
+logger.print("Parameters")
+logger.print("-------------------------")
+logger.print(f"Train fraction:    {train_f}")
+logger.print(f"Learning rate:     {learning_rate}")
+logger.print(f"Batch size:        {batch_size}")
+logger.print(f"Hidden layer size: {hid_size}")
+logger.print(f"Number of epochs:  {epochs}")
+logger.print("-------------------------")
 # Read list of the proteins
 proteins = []
 with open(args.pdb_list, 'r') as iFile:
     for i in iFile:
         if i[0] != '#':
             proteins.append(i.strip())
+train_prots, test_prots = train_test_split(proteins, train_size=train_f, random_state=12)
+logger.print("\n")
+logger.print("Data")
+logger.print("-------------------------")
+logger.print(f"Proteins: train {len(train_prots)}   test {len(test_prots)}")
+logger.print(f"Proteins in test set: {' '.join(test_prots)}")
 
-# print(proteins)
+
 _ = torch.manual_seed(seed)
 device = torch.device(conf_dev)
 
-pd = AllVertices(proteins)
-n_features = pd[0][0].shape[0]
-train_dataset, test_dataset = random_split(pd, [train_f, 1.0 - train_f],
-                                           generator=torch.Generator().manual_seed(seed))
+# pd = AllVertices(proteins)
+# n_features = pd[0][0].shape[0]
+# train_dataset, test_dataset = random_split(pd, [train_f, 1.0 - train_f],
+#                                            generator=torch.Generator().manual_seed(seed))
+train_dataset = AllVertices(train_prots)
+test_dataset = AllVertices(test_prots)
+n_features = train_dataset[0][0].shape[0]
+logger.print(f"Vertices: train {len(train_dataset)}   test {len(test_dataset)}")
+logger.print(f"Features: {n_features}")
 
 # Create data loaders.
 train_dataloader = DataLoader(train_dataset, batch_size=batch_size)

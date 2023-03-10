@@ -1,12 +1,64 @@
-7N8G_A
+# Classification according http://cathdb.info/browse/tree
+#1 Mainly Alpha
+1xmk_A
+3ro3_A
+3iis_M
+4ayo_A
+5lwe_A
+#2 Mainly beta
+3sov_A
+1bx7_A
+3sov_A
+3wvt_A
+2j8b_A
+2fj8_A
+4k12_A
+2f6e_A
+2jne_A
+#3 Alpha Beta
+4g1q_B
+3goe_A
+4acf_A
+4a6q_A
+2bln_A
+1nki_A
+3ks3_A
+1z8g_A
+3l8w_A
+3jv1_A
+3onh_A
+3uby_A
+4xdu_A
+4x33_A
+#4
+4wfo_A
+1rzh_H
+1zt3_A
+#first generation
+1FZW_B
 1GP2_BG
-3AAA_AB
-7WUG_145
-2E89_A
-7FCT_A
-2EG5_E
-7MX9_A
-2OOR_A
 2E7J_B
-7QRR_A
+2EG5_E
 2NYZ_A
+2OOR_A
+3AAA_AB
+7FCT_A
+7MX9_A
+7N8G_A
+7QRR_A
+7WUG_145
+6BOY_BC
+#
+#Add more proteins
+#
+4GBS_AB
+3U22_AB
+6TVP_AB
+3FCG_AB
+1TZF_A
+1WVC_A
+2K4Q_A
+3EEB_AB
+7X4U_A
+8C3N_AB
+8BIR_AB

@@ -1,0 +1,17 @@
+Parameters
+-------------------------
+Train fraction:    0.88
+Learning rate:     0.0001
+Batch size:        256
+Hidden layer size: 32
+Number of epochs:  80
+-------------------------
+
+
+Data
+-------------------------
+Proteins: train 48   test 7
+Proteins in test set: 1FZW_B 3sov_A 1GP2_BG 2jne_A 1nki_A 1WVC_A 7QRR_A
+Vertices: train 658385   test 72052
+Features: 106
+completed
