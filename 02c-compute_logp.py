@@ -51,7 +51,7 @@ if __name__ == '__main__':
         pdb = args.pdb.split('_')
         chains = pdb[1]
         pid = pdb[0]
-        extract_bfactor(pid, chains, path_opts)
+        extract_bfactor(pid, chains, path_opts, mode='logp')
 
     elif args.pdb_list != '':
         with open(args.pdb_list) as f:
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 chains = pdb[1]
                 pid = pdb[0]
                 pid = pid
-                extract_bfactor(pid, chains, path_opts)
+                extract_bfactor(pid, chains, path_opts, mode='logp')
             else:
                 pass
     else:

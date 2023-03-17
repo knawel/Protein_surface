@@ -3,11 +3,12 @@ from Bio.PDB.PDBIO import Select
 from pathlib import Path
 import gzip
 import itertools
+import sys
 
 from src.pdb.operations import protonate
 from src.features.data_encoding import numpy_structure
 from src.geometry_processing import get_interface_for_pair, get_atom_features, atoms_to_points_normals
-from src.geometry_processing import get_atom_charge
+from src.geometry_processing import get_atom_charge, get_point_lipophilicity
 
 import torch
 import numpy as np
@@ -170,8 +171,27 @@ def write_precomputed(pid, chains, paths):
         print(f'structure {pid} contains a single chain {chains}, iface computation skipped')
 
 
-def write_charges(pid, chains, paths):
-    chain_dir = Path(paths["pdb_charges"])
+def extract_bfactor(pid, chains, paths, mode: str = "charge") -> None:
+    """Extracts charges or lipophilicity levels for points data for
+     the given protein ID and chains.
+
+    Args:
+        pid: A string representing the protein ID.
+        chains: A list of strings representing the chain IDs.
+        paths: A dictionary containing the file paths to the PDB charge and logP files and the precomputed directory.
+        mode: A string indicating the mode of extraction, either 'charge' (default) or 'logp'.
+
+    Returns:
+        None.
+    """
+
+    if mode == "charge":
+        chain_dir = Path(paths["pdb_charges"])
+    elif mode == "logp":
+        chain_dir = Path(paths["pdb_logps"])
+    else:
+        sys.exit("Error with b-factor extraction.")
+
     comp_dir = Path(paths["precomputed_dir"]) / pid
 
     for cid in chains:
@@ -180,11 +200,13 @@ def write_charges(pid, chains, paths):
             p = torch.tensor(np.load(npz_f))
 
         # read new PDB
-        atoms, atoms_chr = read_bfactor(pid, cid, chain_dir)
-        print(atoms.shape, atoms_chr.shape)
+        atoms, atoms_b = read_bfactor(pid, cid, chain_dir)
+        print(atoms.shape, atoms_b.shape)
         # calculate charges for points
-        levels = get_atom_charge(atoms, p, atoms_chr)
-
+        if mode == "charge":
+            levels = get_atom_charge(atoms, p, atoms_b)
+        elif mode == "logp":
+            levels = get_point_lipophilicity(atoms, p, atoms_b)
         print('charges are computed')
         print(f'Shapes: charges {levels.shape}; atoms  {atoms.shape}; points {p.shape}')
 

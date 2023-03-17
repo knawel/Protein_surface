@@ -63,3 +63,11 @@
 7X4U_A
 8C3N_AB
 8BIR_AB
+8ID6_RABYS
+7U6I_AB
+7ZX5_X
+# add more high-res pdb
+5TDA_A
+7R2H_A
+6KL0_A
+2IXT_AB

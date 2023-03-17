@@ -1,0 +1,10 @@
+8ID6_RABYS
+7U6I_AB
+#8EN6_BC <- issue with downloading pdb. Need to check it someday, maybe change code to 
+# download CIF format
+7ZX5_X
+# add more high-res pdb
+5TDA_A
+7R2H_A
+6KL0_A
+2IXT_AB

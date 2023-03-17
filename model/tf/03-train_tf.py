@@ -4,6 +4,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
+from keras import metrics
 import argparse
 # local libs
 from src.logger import Logger
@@ -58,7 +59,7 @@ with open(args.pdb_list, 'r') as iFile:
 
 
 # devide test / train by proteins
-train_prots, test_prots = train_test_split(proteins, train_size=train_f, random_state=42)
+train_prots, test_prots = train_test_split(proteins, train_size=train_f, random_state=seed)
 
 _, X_train, y_train = read_list(train_prots)
 _, X_val, y_val = read_list(test_prots)
@@ -75,7 +76,7 @@ logger.print(f"Features: {n_input}")
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(n_input, activation='relu'),
     tf.keras.layers.Dense(hid_size, activation='relu'),
-    tf.keras.layers.Dropout(0.05),
+    tf.keras.layers.Dropout(0.10),
     tf.keras.layers.Dense(hid_size, activation='relu'),
     tf.keras.layers.Dropout(0.15),
     tf.keras.layers.Dense(hid_size, activation='relu'),

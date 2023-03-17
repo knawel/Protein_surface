@@ -327,7 +327,7 @@ def get_atom_features(x, y, y_atomtype, k=16):
     feature = torch.cat([feature, dists], dim=1)
     feature = feature.view(num_points, k, num_dims + 1)
     # mean_features = (feature[:, :, :-1] / feature[:, :, -1][:, :, None]).sum(dim=1)
-    mean_features = (feature[:, :, :-1] * feature[:, :, -1][:, :, None] ).sum(dim=1)
+    mean_features = (feature[:, :, :-1] * feature[:, :, -1][:, :, None]).sum(dim=1)
     return mean_features
 
 
@@ -340,11 +340,27 @@ def get_atom_charge(x, p, charge):
     dist_ij = ((x_i - y_j) ** 2).sum(-1).sqrt()  # (N, M, 1) squared distances
     # Calculate potential as
     # V = sum(9*1.6*q/d)
-    v = (9 * 1.6 * q_i / dist_ij).sum(0)
+    v = (8.99 * 1.602 * q_i / dist_ij).sum(0)
     v = torch.squeeze(v, dim=1)
     # save partial charges as levels: positive, negative and neutral
     levels = np.ones(v.shape[0], dtype=int)
-    levels[v > 5.0] = 2
+    levels[v > 1.0] = 2
     levels[v < -5.0] = 0
     return levels
 
+
+def get_point_lipophilicity(x, p, charge, probe = 2.0):
+    # get mean lipophilicity for each point
+
+    x_i = torch.Tensor(x)[:, None, :]  # (N, 1, 3) atoms
+    q_i = torch.Tensor(charge)[:, None]
+    y_j = torch.Tensor(p)[None, :, :] # (1, M, 3) sampling points
+    dist_ij = ((x_i - y_j) ** 2).sum(-1).sqrt()  # (N, M, 1) squared distances
+    dist_ij[dist_ij < probe] = 1
+    dist_ij[dist_ij >= probe] = 0
+    # Calculate potential as
+    point_logp = torch.matmul(dist_ij.T, q_i).squeeze(dim=1)
+    levels = np.ones(point_logp.shape[0], dtype=int)
+    levels[point_logp > 0.3] = 2
+    levels[point_logp < -0.3] = 0
+    return levels

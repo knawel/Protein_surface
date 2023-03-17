@@ -1,0 +1,17 @@
+Parameters
+-------------------------
+Train fraction:    0.9
+Learning rate:     0.0001
+Batch size:        256
+Hidden layer size: 32
+Number of epochs:  45
+-------------------------
+
+
+Data
+-------------------------
+Proteins: train 54   test 7
+Proteins in test set: 3ks3_A 3iis_M 4xdu_A 4ayo_A 1bx7_A 2E89_A 1nki_A
+Vertices: train 774281   test 74526
+Features: 106
+completed
