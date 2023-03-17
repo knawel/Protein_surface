@@ -53,7 +53,7 @@ with open(args.pdb_list, 'r') as iFile:
     for i in iFile:
         if i[0] != '#':
             proteins.append(i.strip())
-train_prots, test_prots = train_test_split(proteins, train_size=train_f, random_state=12)
+train_prots, test_prots = train_test_split(proteins, train_size=train_f, random_state=seed)
 logger.print("\n")
 logger.print("Data")
 logger.print("-------------------------")
@@ -75,12 +75,12 @@ logger.print(f"Vertices: train {len(train_dataset)}   test {len(test_dataset)}")
 logger.print(f"Features: {n_features}")
 
 # Create data loaders.
-train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
-test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+test_dataloader = DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
 model = AmberNN(n_features, n_cls, hid_size).to(device)
 loss_fn = nn.CrossEntropyLoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)#, weight_decay=0.01)
 
 
 def train_loop(dataloader, model, loss_fn, optimizer):
