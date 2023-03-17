@@ -1,11 +1,5 @@
-from Bio.PDB import *
-import numpy as np
-from pathlib import Path
-import gzip
 import sys
-import torch
 import argparse
-from pykeops.torch import LazyTensor
 
 # Local includes
 from src.configs.general_opts import path_opts
@@ -30,17 +24,6 @@ parser.add_argument(
     help="A text file that includes a list of PDB codes along with chains, example 1ABC_AB",
     required=False
 )
-
-#
-#
-# if len(sys.argv) <= 1:
-#     print(f"Usage: {sys.argv[0]} PDBID_AB or PDBID_ABC ...")
-#     print("A <- chain name")
-#     sys.exit(1)
-# else:
-#     chains_list = []
-#     pid, chains = sys.argv[1].strip().split('_')
-#
 
 
 if __name__ == '__main__':

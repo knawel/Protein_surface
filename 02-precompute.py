@@ -1,15 +1,8 @@
-import numpy as np
 import sys
-from pathlib import Path
-import torch
-import itertools
-import gzip
 import argparse
 # Local includes
 from src.configs.general_opts import path_opts
 from src.pdb.input_output import write_precomputed
-from src.geometry_processing import get_interface_for_pair, get_atom_features, atoms_to_points_normals
-from src.features.data_encoding import numpy_structure
 
 
 # TODO

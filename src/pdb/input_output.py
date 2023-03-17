@@ -205,11 +205,16 @@ def extract_bfactor(pid, chains, paths, mode: str = "charge") -> None:
         # calculate charges for points
         if mode == "charge":
             levels = get_atom_charge(atoms, p, atoms_b)
+            with gzip.GzipFile(comp_dir / f"{pid}_{cid}_charge.npy.gz", "wb") as npz_file:
+                np.save(npz_file, levels)
+            print('charges are computed')
         elif mode == "logp":
             levels = get_point_lipophilicity(atoms, p, atoms_b)
-        print('charges are computed')
+            with gzip.GzipFile(comp_dir / f"{pid}_{cid}_logp.npy.gz", "wb") as npz_file:
+                np.save(npz_file, levels)
+            print('logp are computed')
+
         print(f'Shapes: charges {levels.shape}; atoms  {atoms.shape}; points {p.shape}')
 
-        with gzip.GzipFile(comp_dir / f"{pid}_{cid}_charge.npy.gz", "wb") as npz_file:
-            np.save(npz_file, levels)
+
 
