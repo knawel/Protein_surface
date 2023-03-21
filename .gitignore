@@ -10,10 +10,6 @@ __pycache__/
 
 # models
 model/save
-#model/*.log
-model/*.pt
 
 # datasets
-data/data_preparation/*
-data/datasets/*.h5
-tmp/*
+data/data_preparation

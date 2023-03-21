@@ -1,8 +1,0 @@
-Parameters
--------------------------
-Train fraction:    0.74
-Learning rate:     0.001
-Batch size:        512
-Hidden layer size: 32
-Number of epochs:  75
--------------------------

@@ -1,16 +1,12 @@
-
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
-from keras import metrics
 import argparse
 # local libs
 from src.logger import Logger
 from dataset import read_list
 from run_opts import config_runtime
-
 
 # input arguments:
 parser = argparse.ArgumentParser(description='Run NN model and save it')
@@ -32,7 +28,6 @@ seed = config_runtime['seed']
 learning_rate = config_runtime['learning_rate']
 batch_size = config_runtime['batch_size']
 hid_size = config_runtime['hidden_size']
-log_step = config_runtime['log_step']
 epochs = config_runtime['num_epochs']
 run_name = config_runtime['run_name']
 
@@ -76,16 +71,22 @@ logger.print(f"Features: {n_input}")
 model = tf.keras.Sequential([
     tf.keras.layers.Dense(n_input, activation='relu'),
     tf.keras.layers.Dense(hid_size, activation='relu'),
-    tf.keras.layers.Dropout(0.10),
+    tf.keras.layers.Dropout(0.15),
     tf.keras.layers.Dense(hid_size, activation='relu'),
     tf.keras.layers.Dropout(0.15),
+    tf.keras.layers.Dense(hid_size, activation='relu'),
+    tf.keras.layers.Dropout(0.15),
+    tf.keras.layers.Dense(hid_size, activation='relu'),
+    tf.keras.layers.Dropout(0.20),
+    tf.keras.layers.Dense(hid_size, activation='relu'),
+    tf.keras.layers.Dropout(0.25),
     tf.keras.layers.Dense(hid_size, activation='relu'),
     tf.keras.layers.Dense(16, activation='relu'),
     tf.keras.layers.Dense(8, activation='relu'),
     tf.keras.layers.Dense(n_cls)
 ])
 
-model.compile(optimizer='adam',
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 print(model)
